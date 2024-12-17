@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "4.27.5",
+    "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-dialog": "^1.1.3",
+    "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@uploadthing/react": "^7.1.3",
@@ -23,10 +25,12 @@
     "query-string": "^9.1.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.54.1",
     "svix": "^1.44.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^7.4.1"
+    "uploadthing": "^7.4.1",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
