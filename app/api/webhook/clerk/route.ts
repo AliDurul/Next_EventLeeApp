@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
 
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
+  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'whsec_aeWi9yDLloHYdpoE1nXCxjMVUDAMH83P'
   console.log(WEBHOOK_SECRET);
   
   if (!WEBHOOK_SECRET) {
@@ -104,5 +104,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: deletedUser })
   }
 
-  return new Response('', { status: 200 })
+  return new Response('Webhook received', { status: 200 })
 }
