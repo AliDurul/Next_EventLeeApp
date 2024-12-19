@@ -10,17 +10,18 @@ import * as z from 'zod'
 import { eventDefaultValues } from "@/constants"
 import Dropdown from "./Dropdown"
 import { Textarea } from "@/components/ui/textarea"
-import { FileUploader } from "./FileUploader"
 import { useState } from "react"
 import Image from "next/image"
 import DatePicker from "react-datepicker";
-import { useUploadThing } from '@/lib/uploadthing'
 
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox"
 import { useRouter } from "next/navigation"
 import { createEvent, updateEvent } from "@/lib/actions/event.actions"
 import { IEvent } from "@/lib/database/models/event.model"
+import FileUploader from "./FileUploader"
+import { convertFileToUrl } from "@/lib/utils"
+import { UploadButton, UploadDropzone } from "@/lib/uploadthing"
 
 
 type EventFormProps = {
@@ -31,7 +32,6 @@ type EventFormProps = {
 }
 
 const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
-  const [files, setFiles] = useState<File[]>([])
   const initialValues = event && type === 'Update'
     ? {
       ...event,
@@ -41,8 +41,6 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
     : eventDefaultValues;
   const router = useRouter();
 
-  const { startUpload } = useUploadThing('imageUploader')
-
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: initialValues
@@ -51,15 +49,15 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
     let uploadedImageUrl = values.imageUrl;
 
-    if (files.length > 0) {
-      const uploadedImages = await startUpload(files)
+    // if (files.length > 0) {
+    //   const uploadedImages = await startUpload(files)
 
-      if (!uploadedImages) {
-        return
-      }
+    //   if (!uploadedImages) {
+    //     return
+    //   }
 
-      uploadedImageUrl = uploadedImages[0].url
-    }
+    //   uploadedImageUrl = uploadedImages[0].url
+    // }
 
     if (type === 'Create') {
       try {
@@ -124,37 +122,6 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
               <FormItem className="w-full">
                 <FormControl>
                   <Dropdown onChangeHandler={field.onChange} value={field.value} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="flex flex-col gap-5 md:flex-row">
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl className="h-72">
-                  <Textarea placeholder="Description" {...field} className="textarea rounded-2xl" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl className="h-72">
-                  <FileUploader
-                    onFieldChange={field.onChange}
-                    imageUrl={field.value}
-                    setFiles={setFiles}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -317,6 +284,63 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
           />
         </div>
 
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl className="h-72">
+                  <Textarea placeholder="Description" {...field} className="textarea rounded-2xl" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl className="h-72">
+                  <div className="flex-center bg-dark-3 flex h-72 cursor-pointer flex-col overflow-hidden rounded-xl bg-grey-50">
+                    {field.value ? (
+                      <div className=" relative flex h-full w-full flex-1 justify-center ">
+                        <img
+                          src={field.value}
+                          alt="image"
+                          width={250}
+                          height={250}
+                          className="w-full object-cover object-center"
+                        />
+                        <button
+                          className="rounded-full  text-white  bg-gray-500 px-2 py-1 absolute top-2 right-2"
+                          onClick={() => field.onChange('')}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ) : (
+                      <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          // Do something with the response
+                          const file = res[0];
+                          field.onChange(file.url);
+                        }}
+                        onUploadError={(error: Error) => {
+                          // Do something with the error.
+                          alert(`ERROR! ${error.message}`);
+                        }}
+                      />
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button
           type="submit"

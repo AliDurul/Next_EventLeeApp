@@ -7,7 +7,7 @@ module.exports = withUt({
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx,mdx}',
   ],
   theme: {
     container: {
