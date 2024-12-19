@@ -128,7 +128,6 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
             )}
           />
         </div>
-
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
@@ -314,10 +313,10 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                           className="w-full object-cover object-center"
                         />
                         <button
-                          className="rounded-full  text-white  bg-gray-500 px-2 py-1 absolute top-2 right-2"
+                          className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all"
                           onClick={() => field.onChange('')}
                         >
-                          X
+                          <Image src="/assets/icons/delete.svg" alt="edit" width={20} height={20} />
                         </button>
                       </div>
                     ) : (
