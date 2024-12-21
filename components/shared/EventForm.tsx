@@ -36,9 +36,12 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
     ? {
       ...event,
       startDateTime: new Date(event.startDateTime),
-      endDateTime: new Date(event.endDateTime)
+      endDateTime: new Date(event.endDateTime),
+      categoryId: event.category._id 
     }
     : eventDefaultValues;
+
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
@@ -46,6 +49,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
     defaultValues: initialValues
   })
 
+  
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
     let uploadedImageUrl = values.imageUrl;
 
@@ -118,14 +122,17 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
           <FormField
             control={form.control}
             name="categoryId"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Dropdown onChangeHandler={field.onChange} value={field.value} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              console.log(field);
+              return (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Dropdown onChangeHandler={field.onChange} value={field.value} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
           />
         </div>
         <div className="flex flex-col gap-5 md:flex-row">
