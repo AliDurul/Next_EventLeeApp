@@ -35,30 +35,8 @@
                 <h4>After cloning the project:</h4>
                 <ol>
                     <li>Run <code>npm install</code> to install all dependencies.</li>
-                    <li>Create a new file named <code>.env</code> and add the following content:</li>
-
-  ```env
-  #NEXT
-  NEXT_PUBLIC_SERVER_URL=
-  #CLERK
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-  CLERK_SECRET_KEY=
-  NEXT_CLERK_WEBHOOK_SECRET=
-  NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-  NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-  NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
-  NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
-  #MONGODB
-  MONGODB_URI=
-  #UPLOADTHING
-  UPLOADTHING_SECRET=
-  UPLOADTHING_APP_ID=
-  #STRIPE
-  STRIPE_SECRET_KEY=
-  STRIPE_WEBHOOK_SECRET=
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-  ```
-  <li>Run <code>npm run dev</code> to start the development server.</li>
+                    <li>Rename <code>.env.local-sample</code> to <code>env.local</code> and Replace the placeholder values with your actual credentials.</li>
+                    <li>Run <code>npm run dev</code> to start the development server.</li>
                   </ol>
             </td>
             <td style="padding: 10px; background-color: #ecf0f1;">
